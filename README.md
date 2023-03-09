@@ -1,0 +1,2 @@
+# PowerPlatform-CSharp-FileOperations
+ .NETによるDataverseクライアント
