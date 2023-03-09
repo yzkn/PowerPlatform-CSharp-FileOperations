@@ -1,6 +1,6 @@
 # PowerPlatform-CSharp-FileOperations
 
-.NETによるDataverseクライアント
+.NETによるDataverseクライアントでファイル操作
 
 ---
 
