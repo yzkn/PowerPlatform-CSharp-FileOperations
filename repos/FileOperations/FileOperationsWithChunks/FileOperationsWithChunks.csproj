@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\..\..\SharedResources\Files\25mb.pdf" Link="Files\25mb.pdf">
+    <None Include="..\..\SharedResources\Files\25mb.pdf" Link="Files\25mb.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
