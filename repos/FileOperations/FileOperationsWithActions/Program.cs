@@ -14,8 +14,8 @@ namespace PowerApps.Samples
 
             var service = new Service(config);
 
-            string entityLogicalName = "ya_myfile";
-            string primaryKeyLogicalName = "ya_myfileid";
+            string entityLogicalName = "account";
+            string primaryKeyLogicalName = "accountid";
             string fileColumnSchemaName = "ya_FileColumn";
             string filePropertyName = fileColumnSchemaName.ToLower();
             string fileName = "25mb.pdf";
