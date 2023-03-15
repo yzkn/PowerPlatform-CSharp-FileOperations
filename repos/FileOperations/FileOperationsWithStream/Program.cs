@@ -12,16 +12,13 @@ namespace PowerApps.Samples
 
             var service = new Service(config);
 
-            string entityLogicalName = "account";
-            string fileColumnSchemaName = "ya_FileColumn";
+            string entityLogicalName = "ya_myfile";
+            string fileColumnSchemaName = "ya_File";
             string filePropertyName = fileColumnSchemaName.ToLower();
             string fileName = "25mb.pdf";
             string filePath = $"Files\\{fileName}";
             bool fileUploaded = false;
             int? fileColumnMaxSizeInKb;
-
-            // Create the File Column with 10MB limit
-            await Utility.CreateFileColumn(service, entityLogicalName, fileColumnSchemaName);
 
             // Update the MaxSizeInKB value to 100MB. Comment this line to get error about file too large for column.
             await Utility.UpdateFileColumnMaxSizeInKB(service, entityLogicalName, fileColumnSchemaName.ToLower(), 100 * 1024);
@@ -31,14 +28,14 @@ namespace PowerApps.Samples
 
             #region create account
 
-            JObject account = new() {
+            JObject myFile = new() {
 
-                { "name", "Test account upload file"},
+                { "ya_name", "Test record upload file"},
             };
 
-            EntityReference createdAccountRef = await service.Create("accounts", account);
+            EntityReference createdMyFileRef = await service.Create("ya_myfiles", myFile);
 
-            Console.WriteLine($"Created account record with accountid:{createdAccountRef.Id.Value}");
+            Console.WriteLine($"Created account record with accountid:{createdMyFileRef.Id.Value}");
 
             #endregion create account
 
@@ -49,7 +46,7 @@ namespace PowerApps.Samples
 
                 // Upload file
                 UploadFileRequest uploadFileRequest = new(
-                     entityReference: createdAccountRef,
+                     entityReference: createdMyFileRef,
                      columnName: filePropertyName,
                      fileContent: File.OpenRead(filePath),
                      fileName: fileName,
@@ -68,10 +65,10 @@ namespace PowerApps.Samples
 
             if (fileUploaded)
             {
-                Console.WriteLine($"Downloading file from {createdAccountRef.Path}/{filePropertyName} ...");
+                Console.WriteLine($"Downloading file from {createdMyFileRef.Path}/{filePropertyName} ...");
                 // Download file
                 DownloadFileRequest downloadFileRequest = new(
-                    entityReference: createdAccountRef,
+                    entityReference: createdMyFileRef,
                     property: filePropertyName);
 
                 var downloadFileResponse = await service.SendAsync<DownloadFileResponse>(downloadFileRequest);
@@ -83,20 +80,16 @@ namespace PowerApps.Samples
 
                 // Delete file
                 DeleteColumnValueRequest deleteColumnValueRequest = new(
-                    entityReference: createdAccountRef,
+                    entityReference: createdMyFileRef,
                     propertyName: filePropertyName);
                 await service.SendAsync(deleteColumnValueRequest);
 
                 Console.WriteLine($"Deleted file at: {deleteColumnValueRequest.RequestUri}.");
             }
 
-            // Delete the account record
-            await service.Delete(createdAccountRef);
-            Console.WriteLine("Deleted the account record.");
-
-            // Delete the file column
-            await Utility.DeleteFileColumn(service, entityLogicalName, fileColumnSchemaName.ToLower());
-
+            // Delete the file record
+            await service.Delete(createdMyFileRef);
+            Console.WriteLine("Deleted the file record.");
         }
     }
 }
